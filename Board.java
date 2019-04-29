@@ -24,6 +24,21 @@ public class Board implements BoardConstants {
 				tiles.add(new Tile(x,y));
 	}
 	
+	public Piece takePiece(int x, int y) {
+		Piece p = null;
+		if (this.tiles.get(x+y*DIM).getPiece() != null) {
+			p = this.tiles.get(x+y*DIM).getPiece();
+		}
+		this.tiles.get(x+y*DIM).setPiece(null);
+		return p;
+	}
+	
+	public void putPiece(Piece p, int x, int y) {
+		if (this.tiles.get(x+y*DIM).getPiece() == null) {
+			this.tiles.get(x+y*DIM).setPiece(p);
+		}
+	}
+	
 	public String toString() {
 		String s = new String();
 		for (int y = 0; y < DIM; y++) {

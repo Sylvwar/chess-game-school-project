@@ -45,7 +45,7 @@ public class Tile {
 
 	public void setPiece(Piece p) {
 		this.p = p;
-		p.setTile(this);
+		p.setTile(this); 
 	}
 	
 	// methods
