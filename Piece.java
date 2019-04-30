@@ -5,10 +5,6 @@ public abstract class Piece {
 	private Tile tile;
 	
 	// constructors
-	
-	public Piece() {
-		
-	}
 
 	public Piece(String side) {
 		this.color = side;

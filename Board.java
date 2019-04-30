@@ -39,10 +39,12 @@ public class Board implements BoardConstants {
 		}
 	}
 	
+	/* printing the board in text display */
+	
 	public String toString() {
 		String s = new String();
 		for (int y = 0; y < DIM; y++) {
-			s += "\n ";
+			s += "\n";
 			
 			for (int x = 0; x < DIM; x++) {
 				

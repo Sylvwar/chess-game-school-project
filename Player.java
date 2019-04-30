@@ -10,7 +10,7 @@ public class Player implements PlayerConstants {
 	
 	public Player(String side) {
 		this.side = side;
-		this.genPieces();
+		//this.genPieces();
 	}
 	
 	// getters & setters
@@ -25,6 +25,7 @@ public class Player implements PlayerConstants {
 
 	// methods
 	
+	/*
 	private void genPieces() {
 		for (String type : TYPES.keySet()) {
 			for (int i = 0; i < TYPES.get(type); i++) {
@@ -38,11 +39,22 @@ public class Player implements PlayerConstants {
 			}
 		}
 	}
+	*/
+	
+	public void addPiece(Board b, Piece p, int x, int y) {
+		b.putPiece(p, x, y);
+		this.pieces.add(p);
+	}
+	
+	public void delPiece(Board b, int x, int y) {
+		Piece p = b.takePiece(x, y);
+		this.pieces.remove(p);
+	}
 	
 	public String toString() {
-		String s = new String("(");
+		String s = new String("( ");
 		for (Piece p : this.pieces)
-			s += p;
+			s += p + " ";
 		return s+")";
 	}
 	

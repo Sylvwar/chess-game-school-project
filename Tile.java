@@ -45,15 +45,20 @@ public class Tile {
 
 	public void setPiece(Piece p) {
 		this.p = p;
-		p.setTile(this); 
+		if (p != null)
+			p.setTile(this); 
 	}
 	
 	// methods
 
 	public boolean isOccupied() {
-		if (p == null)
-			return false;
-		return true;
+		if (p != null)
+			return true;
+		return false;
+	}
+	
+	public String toString() {
+		return new String("( " + this.x + ", " + this.y + " )");
 	}
 	
 

@@ -3,22 +3,18 @@ public class Test {
 
 	public static void main(String[] arg) {
 		
-		System.out.println("\n Board Display Test");
+		Game game = new Game();
 		
-		Board b = new Board();
-		System.out.println(b);
-		b.getTiles().get(9).setPiece(new Pawn("white"));
-		b.getTiles().get(9).setPiece(new Tower("black"));
-		b.getTiles().get(31).setPiece(new King("black"));
-		b.getTiles().get(43).setPiece(new Bishop("white"));
-		System.out.println(b);
+		System.out.println(game.getBoard());
+		game.genSides();
+		game.getpW().delPiece(game.getBoard(), 2, 6);
+		System.out.println(game.getBoard());
+		
+		System.out.println("\nwhite player pieces : " + game.getpW());
+		
+		System.out.println("black king position : " + game.getpB().getPieces().get(4).getTile());
 		
 		
-		Player p = new Player(Player.BLACK_SIDE);
-		System.out.println("\n " + p);
-		
-		for (Piece c : p.getPieces())
-			System.out.println(" " + p.getPieces().get(p.getPieces().indexOf(c)).getColor());
 		
 	}
 	
