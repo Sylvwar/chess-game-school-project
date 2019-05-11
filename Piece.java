@@ -30,6 +30,10 @@ public abstract class Piece {
 
 	// methods
 	
+	public boolean isMovement(int x1, int y1, int x2, int y2) {
+		return false;
+	}
+	
 	public String toString() {
 		String s = new String();
 		if (this.color == "white")
