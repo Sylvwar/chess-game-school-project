@@ -1,3 +1,4 @@
+import model.Game;
 
 public class Test {
 
@@ -5,8 +6,6 @@ public class Test {
 		
 		Game game = new Game();
 		game.playGame();
-		
-		//System.out.println("\n" + game.getpB() + "\n" + game.getpW());
 		
 	}
 	
