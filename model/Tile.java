@@ -94,10 +94,5 @@ public class Tile {
 			return true;
 		return false;
 	}
-	
-	public String toString() {
-		return new String("( " + this.x + ", " + this.y + " )");
-	}
-	
 
 }

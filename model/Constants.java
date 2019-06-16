@@ -6,14 +6,16 @@ public interface Constants {
 	public static final String WHITE_SIDE = "white";
 	public static final String BLACK_SIDE = "black";
 	
+	// Piece labels
+	public static final String PAWN = "P";
+	public static final String ROOK = "R";
+	public static final String BISHOP = "B";
+	public static final String KNIGHT = "H";
+	public static final String QUEEN = "Q";
+	public static final String KING = "K";
+	
 	// Board dimensions
 	public static final int DIM = 8;
 	public static final int TOTAL_LEN = DIM*DIM;
-	
-	// terminal colors
-	public static final String BG_WHITE = "\u001B[47m";
-	public static final String BG_BLACK = "\u001B[40m";
-	public static final String WHITE = "\u001B[37m";
-	public static final String BLACK = "\u001B[30m";
 	
 }

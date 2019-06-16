@@ -16,6 +16,7 @@ public class Game {
 	private Board board;
 	private Display display;
 	private boolean whiteTurn;
+	private boolean run = false;
 	
 	/**
 	 * Constructor for a Game
@@ -24,7 +25,7 @@ public class Game {
 		this.pW = new Player(Player.WHITE_SIDE);
 		this.pB = new Player(Player.BLACK_SIDE);
 		this.board = new Board();
-		this.display = new Display(this.board,"terminal");
+		this.display = new Display(this);
 	}
 	
 	/**
@@ -84,8 +85,14 @@ public class Game {
 		int select = selectOption();
 		
 		if (select == 1) {
-			display.displayTag(select);
-			playTurn();
+			if (isRunning()) {
+				display.displayTag(select);
+				playTurn();
+			}
+			else {
+				display.displayWarning(1);
+				playGame();
+			}
 		}
 		else if (select == 2) {
 			display.displayTag(select);
@@ -94,12 +101,12 @@ public class Game {
 		}
 		else if (select == 3) {
 			display.displayTag(select);
-			loadGame("src/Save.txt");
+			loadGame("src/Save.data");
 			playTurn();
 		}
 		else if (select == 4) {
 			display.displayTag(select);
-			saveGame("src/Save.txt");
+			saveGame("src/Save.data");
 			playGame();
 		}
 		else {
@@ -120,7 +127,7 @@ public class Game {
 		do {
 			select = Integer.parseInt(display.displayInput());
 		}
-		while ( !(1 <= select) || !(select <= 5));
+		while ( !(1 <= select) || !(select <= 5) );
 		
 		return select;
 		
@@ -148,6 +155,7 @@ public class Game {
 		
 		String move;
 		
+		display.displayWarning(2);
 		do {
 			move = display.displayInput();
 		}
@@ -211,9 +219,9 @@ public class Game {
 			
 			if (p2 != null) {
 				if (p1.getColor() == "white")
-					this.pW.capturePiece(this.board,this.pB,p2,x2,y2);
+					capturePiece(this.pW,p2,x2,y2);
 				else
-					this.pB.capturePiece(this.board,this.pW,p2,x2,y2);
+					capturePiece(this.pB,p2,x2,y2);
 			}
 			
 			this.board.putPiece(p1,x2,y2);
@@ -261,6 +269,7 @@ public class Game {
 		this.board.resetBoard();
 		this.genSides();
 		this.whiteTurn = true;
+		this.setRunning(true);
 	}
 	
 	/**
@@ -272,6 +281,7 @@ public class Game {
 		this.pW.resetPlayer();
 		this.pB.resetPlayer();
 		this.board.resetBoard();
+		this.setRunning(true);
 		
 		try {
 		      BufferedReader in = new BufferedReader(new FileReader(file));
@@ -294,32 +304,32 @@ public class Game {
 
 			    		  if (token.substring(1, 2).equals("1")) {
 			    			  if (token.substring(0, 1).equals("P"))
-			    				  this.pW.addPiece(this.board, new Pawn(this.pW.getSide()), x, y);
+			    				  addPiece(this.pW, new Pawn(this.pW.getSide()), x, y);
 			    			  else if (token.substring(0, 1).equals("R"))
-			    				  this.pW.addPiece(this.board, new Rook(this.pW.getSide()), x, y);
+			    				  addPiece(this.pW, new Rook(this.pW.getSide()), x, y);
 			    			  else if (token.substring(0, 1).equals("H"))
-			    				  this.pW.addPiece(this.board, new Knight(this.pW.getSide()), x, y);
+			    				  addPiece(this.pW, new Knight(this.pW.getSide()), x, y);
 			    			  else if (token.substring(0, 1).equals("B"))
-			    				  this.pW.addPiece(this.board, new Bishop(this.pW.getSide()), x, y);
+			    				  addPiece(this.pW, new Bishop(this.pW.getSide()), x, y);
 			    			  else if (token.substring(0, 1).equals("Q"))
-			    				  this.pW.addPiece(this.board, new Queen(this.pW.getSide()), x, y);
+			    				  addPiece(this.pW, new Queen(this.pW.getSide()), x, y);
 			    			  else if (token.substring(0, 1).equals("K"))
-			    				  this.pW.addPiece(this.board, new King(this.pW.getSide()), x, y);
+			    				  addPiece(this.pW, new King(this.pW.getSide()), x, y);
 			    		  }
 			    		  
 			    		  else {
 			    			  if (token.substring(0, 1).equals("P"))
-			    				  this.pB.addPiece(this.board, new Pawn(this.pB.getSide()), x, y);
+			    				  addPiece(this.pB, new Pawn(this.pB.getSide()), x, y);
 			    			  else if (token.substring(0, 1).equals("R"))
-			    				  this.pB.addPiece(this.board, new Rook(this.pB.getSide()), x, y);
+			    				  addPiece(this.pB, new Rook(this.pB.getSide()), x, y);
 			    			  else if (token.substring(0, 1).equals("H"))
-			    				  this.pB.addPiece(this.board, new Knight(this.pB.getSide()), x, y);
+			    				  addPiece(this.pB, new Knight(this.pB.getSide()), x, y);
 			    			  else if (token.substring(0, 1).equals("B"))
-			    				  this.pB.addPiece(this.board, new Bishop(this.pB.getSide()), x, y);
+			    				  addPiece(this.pB, new Bishop(this.pB.getSide()), x, y);
 			    			  else if (token.substring(0, 1).equals("Q"))
-			    				  this.pB.addPiece(this.board, new Queen(this.pB.getSide()), x, y);
+			    				  addPiece(this.pB, new Queen(this.pB.getSide()), x, y);
 			    			  else if (token.substring(0, 1).equals("K"))
-			    				  this.pB.addPiece(this.board, new King(this.pB.getSide()), x, y);
+			    				  addPiece(this.pB, new King(this.pB.getSide()), x, y);
 			    		  }
 		    		  
 		    		  }
@@ -354,12 +364,12 @@ public class Game {
 		    		  
 		    		  if (this.board.getTiles()[y][x].isOccupied()) {
 		    			  if (this.board.getTiles()[y][x].getPiece().getColor().equals("white"))
-			    			  out.print( "[" + this.board.getTiles()[y][x].getPiece() + 1 + "] " );
+			    			  out.print( "[" + this.board.getTiles()[y][x].getPiece().getLabel() + 1 + "] " );
 			    		  else
-			    			  out.print( "[" + this.board.getTiles()[y][x].getPiece() + 2 + "] " );
+			    			  out.print( "[" + this.board.getTiles()[y][x].getPiece().getLabel() + 2 + "] " );
 		    		  }
 		    		  else {
-		    			  out.print( "[" + "" + "] " );
+		    			  out.print( "[] " );
 		    		  }
   
 		    	  }
@@ -376,19 +386,41 @@ public class Game {
 				
 	}
 	
+	
 	/**
-	 * TO DO
+	 * A function that return if the game is currently running
+	 * @return a boolean
 	 */
-	public void isRunning() {
-		
+	public boolean isRunning() {
+		return this.run;
+	}
+	
+	/**
+	 * A function that set the running state of the Game
+	 * @param run, a boolean
+	 */
+	public void setRunning(boolean run) {
+		this.run = run;
 	}
 	
 	/**
 	 * A function that returns if it's white turn
-	 * @return boolean
+	 * @return a boolean
 	 */
 	public boolean isWhiteTurn() {
 		return this.whiteTurn;
+	}
+	
+	/**
+	 * A function that return the Player's opponent reference
+	 * @param player, a Player reference
+	 * @return a Player reference
+	 */
+	public Player getOpponent(Player player) {
+		if (player.getSide().equals("white"))
+			return pB;
+		else
+			return pW;
 	}
 	
 	/**
@@ -396,6 +428,41 @@ public class Game {
 	 */
 	public void nextTurn() {
 		this.whiteTurn = !this.whiteTurn;
+	}
+	
+	/**
+	 * A function that add a Piece on the Board and associates with his Player
+	 * @param player, a Player reference
+	 * @param p, a Piece reference
+	 * @param x, the columns index
+	 * @param y, the rows index
+	 */
+	public void addPiece(Player player, Piece p, int x, int y) {
+		this.board.putPiece(p, x, y);
+		player.getPieces().add(p);
+	}
+	
+	/**
+	 * A function that delete a Piece from the Board and 
+	 * @param player, a Player reference
+	 * @param x, the columns index
+	 * @param y, the rows index
+	 */
+	public void delPiece(Player player, int x, int y) {
+		Piece p = this.board.takePiece(x, y);
+		player.getPieces().remove(p);
+	}
+	
+	/**
+	 * A function that switch a Piece from his Player list to the Opponent's captures
+	 * @param player, a Player reference
+	 * @param p, a Piece reference
+	 * @param x, the columns index
+	 * @param y, the rows index
+	 */
+	public void capturePiece(Player player, Piece p, int x, int y) {
+		player.getCaptures().add(p);
+		delPiece(getOpponent(player), x, y);
 	}
 	
 	/**
@@ -411,23 +478,23 @@ public class Game {
 	 */
 	public void genWhite() {
 		
-		this.pW.addPiece(this.board, new Rook(this.pW.getSide()), 0, 7);
-		this.pW.addPiece(this.board, new Knight(this.pW.getSide()), 1, 7);
-		this.pW.addPiece(this.board, new Bishop(this.pW.getSide()), 2, 7);
-		this.pW.addPiece(this.board, new Queen(this.pW.getSide()), 3, 7);
-		this.pW.addPiece(this.board, new King(this.pW.getSide()), 4, 7);
-		this.pW.addPiece(this.board, new Bishop(this.pW.getSide()), 5, 7);
-		this.pW.addPiece(this.board, new Knight(this.pW.getSide()), 6, 7);
-		this.pW.addPiece(this.board, new Rook(this.pW.getSide()), 7, 7);
+		addPiece(this.pW, new Rook(this.pW.getSide()), 0, 7);
+		addPiece(this.pW, new Knight(this.pW.getSide()), 1, 7);
+		addPiece(this.pW, new Bishop(this.pW.getSide()), 2, 7);
+		addPiece(this.pW, new Queen(this.pW.getSide()), 3, 7);
+		addPiece(this.pW, new King(this.pW.getSide()), 4, 7);
+		addPiece(this.pW, new Bishop(this.pW.getSide()), 5, 7);
+		addPiece(this.pW, new Knight(this.pW.getSide()), 6, 7);
+		addPiece(this.pW, new Rook(this.pW.getSide()), 7, 7);
 		
-		this.pW.addPiece(this.board, new Pawn(this.pW.getSide()), 0, 6);
-		this.pW.addPiece(this.board, new Pawn(this.pW.getSide()), 1, 6);
-		this.pW.addPiece(this.board, new Pawn(this.pW.getSide()), 2, 6);
-		this.pW.addPiece(this.board, new Pawn(this.pW.getSide()), 3, 6);
-		this.pW.addPiece(this.board, new Pawn(this.pW.getSide()), 4, 6);
-		this.pW.addPiece(this.board, new Pawn(this.pW.getSide()), 5, 6);
-		this.pW.addPiece(this.board, new Pawn(this.pW.getSide()), 6, 6);
-		this.pW.addPiece(this.board, new Pawn(this.pW.getSide()), 7, 6);
+		addPiece(this.pW, new Pawn(this.pW.getSide()), 0, 6);
+		addPiece(this.pW, new Pawn(this.pW.getSide()), 1, 6);
+		addPiece(this.pW, new Pawn(this.pW.getSide()), 2, 6);
+		addPiece(this.pW, new Pawn(this.pW.getSide()), 3, 6);
+		addPiece(this.pW, new Pawn(this.pW.getSide()), 4, 6);
+		addPiece(this.pW, new Pawn(this.pW.getSide()), 5, 6);
+		addPiece(this.pW, new Pawn(this.pW.getSide()), 6, 6);
+		addPiece(this.pW, new Pawn(this.pW.getSide()), 7, 6);
 		
 	}
 	
@@ -436,23 +503,23 @@ public class Game {
 	 */
 	public void genBlack() {
 		
-		this.pB.addPiece(this.board, new Rook(this.pB.getSide()), 0, 0);
-		this.pB.addPiece(this.board, new Knight(this.pB.getSide()), 1, 0);
-		this.pB.addPiece(this.board, new Bishop(this.pB.getSide()), 2, 0);
-		this.pB.addPiece(this.board, new Queen(this.pB.getSide()), 3, 0);
-		this.pB.addPiece(this.board, new King(this.pB.getSide()), 4, 0);
-		this.pB.addPiece(this.board, new Bishop(this.pB.getSide()), 5, 0);
-		this.pB.addPiece(this.board, new Knight(this.pB.getSide()), 6, 0);
-		this.pB.addPiece(this.board, new Rook(this.pB.getSide()), 7, 0);
+		addPiece(this.pB, new Rook(this.pB.getSide()), 0, 0);
+		addPiece(this.pB, new Knight(this.pB.getSide()), 1, 0);
+		addPiece(this.pB, new Bishop(this.pB.getSide()), 2, 0);
+		addPiece(this.pB, new Queen(this.pB.getSide()), 3, 0);
+		addPiece(this.pB, new King(this.pB.getSide()), 4, 0);
+		addPiece(this.pB, new Bishop(this.pB.getSide()), 5, 0);
+		addPiece(this.pB, new Knight(this.pB.getSide()), 6, 0);
+		addPiece(this.pB, new Rook(this.pB.getSide()), 7, 0);
 		
-		this.pB.addPiece(this.board, new Pawn(this.pB.getSide()), 0, 1);
-		this.pB.addPiece(this.board, new Pawn(this.pB.getSide()), 1, 1);
-		this.pB.addPiece(this.board, new Pawn(this.pB.getSide()), 2, 1);
-		this.pB.addPiece(this.board, new Pawn(this.pB.getSide()), 3, 1);
-		this.pB.addPiece(this.board, new Pawn(this.pB.getSide()), 4, 1);
-		this.pB.addPiece(this.board, new Pawn(this.pB.getSide()), 5, 1);
-		this.pB.addPiece(this.board, new Pawn(this.pB.getSide()), 6, 1);
-		this.pB.addPiece(this.board, new Pawn(this.pB.getSide()), 7, 1);
+		addPiece(this.pB, new Pawn(this.pB.getSide()), 0, 1);
+		addPiece(this.pB, new Pawn(this.pB.getSide()), 1, 1);
+		addPiece(this.pB, new Pawn(this.pB.getSide()), 2, 1);
+		addPiece(this.pB, new Pawn(this.pB.getSide()), 3, 1);
+		addPiece(this.pB, new Pawn(this.pB.getSide()), 4, 1);
+		addPiece(this.pB, new Pawn(this.pB.getSide()), 5, 1);
+		addPiece(this.pB, new Pawn(this.pB.getSide()), 6, 1);
+		addPiece(this.pB, new Pawn(this.pB.getSide()), 7, 1);
 		
 	}
 	

@@ -1,5 +1,7 @@
 package pieces;
 
+import model.Constants;
+
 public class Pawn extends Piece {
 	
 	private boolean firstMove = true;
@@ -7,7 +9,7 @@ public class Pawn extends Piece {
 	// constructors
 
 	public Pawn(String side) {
-		super(side);
+		super(side,Constants.PAWN);
 	}
 	
 	// methods
@@ -54,13 +56,4 @@ public class Pawn extends Piece {
 			return (Math.abs(x2-x1) == 1 && y2-y1 == 1);
 	}
 	
-	public String toString() {
-		String s = new String();
-		if (super.getColor() == "white")
-			s += "P";
-		else
-			s += "P";
-		return s;
-	}
-
 }

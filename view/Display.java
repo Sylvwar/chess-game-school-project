@@ -5,14 +5,12 @@ import model.*;
 
 public class Display implements Constants {
 
-	Board board;
-	String mode;
+	Game game;
 	
 	// constructors
 	
-	public Display(Board board, String mode) {
-		this.board = board;
-		this.mode = mode;
+	public Display(Game game) {
+		this.game = game;
 	}
 	
 	// methods
@@ -23,14 +21,14 @@ public class Display implements Constants {
 		System.out.println("2. New");
 		System.out.println("3. Load");
 		System.out.println("4. Save");
-		System.out.println("5. Quit");
+		System.out.println("5. Quit\n");
 		
 	}
 	
 	public void displayTag(int select) {
 		
 		if (select == 1) {
-			System.out.println("# Resume");
+			System.out.println("# Resume\n");
 		}
 		else if (select == 2) {
 			System.out.println("# New");
@@ -39,7 +37,7 @@ public class Display implements Constants {
 			System.out.println("# Load");
 		}
 		else if (select == 4) {
-			System.out.println("# Save");
+			System.out.println("# Save\n");
 		}
 		else if (select == 5) {
 			System.out.println("# Quit");
@@ -52,7 +50,7 @@ public class Display implements Constants {
 	
 	public String displayInput() {
 		Scanner sc = new Scanner(System.in);
-		System.out.print("\n> ");
+		System.out.print("> ");
 		String input = sc.next();
 		
 		return input;
@@ -69,10 +67,10 @@ public class Display implements Constants {
 			
 			for (int x = 0; x < DIM; x++) {
 				
-				if (board.getTiles()[x][y].getColor() == "white")
-					s += TileFormat(x,y);
+				if (game.getBoard().getTiles()[x][y].getColor() == "white")
+					s += tileFormat(x,y);
 				else
-					s += TileFormat(x,y);
+					s += tileFormat(x,y);
 				
 			}
 			
@@ -87,12 +85,38 @@ public class Display implements Constants {
 		
 	}
 	
-	public String TileFormat(int x, int y) {
+	public String tileFormat(int x, int y) {
 		
-		if (board.getTiles()[y][x].getPiece() == null)
+		if (game.getBoard().getTiles()[y][x].getPiece() == null)
 			return "[ ] ";
 		else
-			return "[" + board.getTiles()[y][x].getPiece() + "] ";
+			return "[" + game.getBoard().getTiles()[y][x].getPiece().getLabel() + "] ";
+		
+	}
+
+	public void displayWarning(int type) {
+		
+		if (type == 1) {
+			System.out.println("# No game is currently running\n");
+		}
+		else if (type == 2) {
+			if (game.isWhiteTurn())
+				System.out.println("\n~ Player white turn");
+			else
+				System.out.println("\n~ Player black turn");
+		}
+		else if (type == 3) {
+			System.out.println("# ");
+		}
+		else if (type == 4) {
+			System.out.println("# ");
+		}
+		else if (type == 5) {
+			System.out.println("# ");
+		}
+		else {
+			System.out.println("# ");
+		}
 		
 	}
 	

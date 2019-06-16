@@ -1,11 +1,13 @@
 package pieces;
 
+import model.Constants;
+
 public class King extends Piece {
 	
 	// constructors
 
 	public King(String side) {
-		super(side);
+		super(side,Constants.KING);
 	}
 	
 	// methods
@@ -14,13 +16,4 @@ public class King extends Piece {
 		return ( Math.abs(x2-x1) <= 1 && Math.abs(y2-y1) <= 1 );
 	}
 	
-	public String toString() {
-		String s = new String();
-		if (super.getColor() == "white")
-			s += "K";
-		else
-			s += "K";
-		return s;
-	}
-
 }
