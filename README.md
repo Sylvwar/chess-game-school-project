@@ -2,5 +2,4 @@
 
 *Chess game in Java for OOP Java class semester project*
 
----
 
